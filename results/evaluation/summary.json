@@ -1,0 +1,17 @@
+{
+  "accuracy": 0.9124,
+  "macro_f1": 0.9089,
+  "f1_negative": 0.927,
+  "f1_positive": 0.891,
+  "test_size": 1141,
+  "confusion_matrix": [
+    [
+      632,
+      27
+    ],
+    [
+      73,
+      409
+    ]
+  ]
+}

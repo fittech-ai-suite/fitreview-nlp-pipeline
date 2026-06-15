@@ -1,0 +1,187 @@
+{
+  "total_errors": 100,
+  "false_positives": [
+    {
+      "text": "It has been a good app as I search inner peace and balance in my life. I bought the premium version and enjoyed it quite a bit untill I found Insight Timer. A free app with same intention but a lot better. You can take classes, join groups, choose voices, languages and keep track of your progress. S",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9974
+    },
+    {
+      "text": "I would describe this app as good to use if your trying to get stronger in powerlifting such as deadlifting,squats,bench, and other main events in powerliftinf. To be fair I would give this app a 4 star rating. In my personal opinion I would rather have it give me an option to be more specific. For ",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9964
+    },
+    {
+      "text": "I've been trying to find my friend's challenge for over a week. I've added her as a friend and can't see the challenge from her profile like she says I should be able to. I can't search for the challenge, it only gives me the option to filter by sport and type. It's a shame because I wanted to join ",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9963
+    },
+    {
+      "text": "A great app in general, but so much stuff in there that I don't need and it's simply not possible to deactivate them -I don't need streaks -I don't need all these animations -I don't want meal tips I just want a functional app to track everything with as minimal time necessary to do so. Please add s",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9952
+    },
+    {
+      "text": "Use this for tracking walking, it is easy to use and was accurate, but no longer. I still love the app design and associated website. However the accuracy seems to have gone to pot recently. So I am now using another app which seems to give much more consistent and reliable results.",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9913
+    },
+    {
+      "text": "Has been super helpful for me to lose weight! I've been using it since 2015 and it has probably saved me so much money that I could've spent on a gym. Kept using it throughout the lockdowns as well, life saving. Edit April 2022 - the new update has not been a positive experience. You should at least",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9868
+    },
+    {
+      "text": "it won't save any favorites anymore.  everytime I open the app it says it crashes. if they get the crash fixed I will give it more stars. aside from that is a very good app for keeping track of carbs fat and protein",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9857
+    },
+    {
+      "text": "Generally enjoyable, but the captias sometimes break & refuse to work as intended, & at times has replaced my alarm with a different significantly more irritating one. according to others, the alarm is absurdly loud & can be heard from outside the building no matter how low I set the volume.",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9825
+    },
+    {
+      "text": "As I get older, I realize how important lifting is to maintaining my mobility and flexibility. Stronglifts was a great motivator for me by helping me make incremental progress toward my goals. After some time away for sickness and injury, I came back to the app to find that I now have to subscribe e",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9755
+    },
+    {
+      "text": "I use the same user name and password in website or workouts app and it works. Please fix it.",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.965
+    },
+    {
+      "text": "Works well. Keeps accurate distance on the phones I've used it with. Had the premium for a while. I'm broke so I got rid of it but I loved it. Voice coach was especially cool Bought premium again and now it crashes on startup. Using Pixel 4 and can't even open the app",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9522
+    },
+    {
+      "text": "Great app if it was not a greedy money hungry app wanting to make you pay just to listen to sounds. Just use U-Tube instead, its free. I can see to pay to listen. to podcast but not just noise.",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.95
+    },
+    {
+      "text": "Thr UI is nice, and it's easy to book a session. The integration (or lack thereof) of Zoom for video conferencing needs to be optimized. I received the link for Zoom 5 minutes after the start of my session. It should be a one touch SSO experience. Let alone the fact that I didn't agree to download a",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9489
+    },
+    {
+      "text": "Still ok, but all the tracking of how much weight went haywire. see how it goes, but probably back to own and paper, again...",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.941
+    },
+    {
+      "text": "Great for setting a plan that is flexible and easy to follow. The only thing I dislike is that when running sprints it won't tell you that you've reached the distance it wanted you to go so you have to keep checking the app while you sprint. Otherwise a great app for all levels of athletes. Edit: Th",
+      "true_label": "negative",
+      "predicted_label": "positive",
+      "confidence": 0.9092
+    }
+  ],
+  "false_negatives": [
+    {
+      "text": "Confusing at checkout ,,, looks like only Paypal is accepted. Took me 3 times to figure out and had to come back twice before accepted. Time wasting!!",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9957
+    },
+    {
+      "text": "Got a Garmin watch because it's listed as officially supported by Sleep as Android. But the Sleep app for Garmin is completely broken and unusable. Therefore money wasted on both a watch and premium subscription for the app.",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9955
+    },
+    {
+      "text": "Good product, bad customer service. I was on the fence about buying Whoop due to reported connectivity issues but I've had no issues at all. I find the data to be pretty accurate and useful for tracking my sleep and fitness. However, the customer service is really lacking. I wanted to return the ext",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9953
+    },
+    {
+      "text": "Since the October 13 update GPS does not work. All of my friends have the same issue. Makes it useless but I'm 90 miles away from the goal so I am editing every blank workout to add the distance manually. UPDATE. the update makes the GPS not work with battery optimization. If you turn that off for t",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9944
+    },
+    {
+      "text": "bugs a lot of bugs 1) It can't stop activities some Times and the app is stuck to just close the app I have to restart my phone. 2) I was in my 4th week of guided training and then it suddenly put me out of training automatically.",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9944
+    },
+    {
+      "text": "Dont know who did this update. No account info. Trouble logging in. Seems more like logging in on webpage with less info. Slower. Got email saying I left something in cart but cart shows empty.",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9942
+    },
+    {
+      "text": "The most recent update has been very frustrating. 1)Can't see total calories by meal, 2)can no longer conveniently see the entire formula that computes remaining calories, 3)On the calories chart there is no option for 7 rolling days, 4)cannot delete more than one item at a time, 5)on the Today tab,",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9942
+    },
+    {
+      "text": "Loved the app a year ago, but I don't like the new version as much. In the old version going back in the calendar and flipping the phone would show that day's heartrate graph, but now it only shows today's graph no matter what. This makes it difficult to add an activity after the fact, and, let's be",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.994
+    },
+    {
+      "text": "Health Connect keeps duplicating or triplicating my workouts. I have Garmin connected to MFP and they keep bouncing workouts back and forth until it looks like I've burned thousands of calories that I haven't. I can't turn it off without disconnecting Garmin which I prefer to track my workouts. Fix ",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9936
+    },
+    {
+      "text": "Slow startup with adguard (ad blocking software) running. Thought was an issue with the app, but this is a new issue. Brilliant app but shouldnt rely on an Internet connection to load up. Should load up first and then show connectivity with server etc. Also why is it being flagged by adblock softwar",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9934
+    },
+    {
+      "text": "Seriously disappointed that this is going away and that I'm Nex to use multiple apps to do the same tracking I did in just this one. Its an unnecessary complication to tracking my workouts and frankly makes me not want to use any of their products. ____________ Good app. Just wish it could tell when",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9929
+    },
+    {
+      "text": "[Updated at end with what works to fix this] I've been using this app for over 6 years. Since upgrading to Oreo it is no longer capable of tracking my GPS. I've tried everything. I've followed all of their suggestions. It'll occasionally track a workout here and there (weeks apart), but generally it",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9926
+    },
+    {
+      "text": "I have samsung fold and the app often needs me either to open the fold to resize or does not cooperate and I have to restart app to continue. I have updated the app many times, I do not believe development has created a fix for this in mobile view for either screen. very basic just like a website th",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9926
+    },
+    {
+      "text": "Keeps showing that it has crashed. If not for that, I'd have no complaints at all.",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9924
+    },
+    {
+      "text": "Product details and descriptions are not formatted properly for a mobile screen. You have to scroll horizontally in order to read the entire entry. There also is no option to expand product images, to my knowledge.",
+      "true_label": "positive",
+      "predicted_label": "negative",
+      "confidence": 0.9924
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "model": "Majority Class Baseline",
+    "accuracy": 0.5776,
+    "macro_f1": 0.3661,
+    "f1_negative": 0.732,
+    "f1_positive": 0.0,
+    "train_time_sec": 0.0
+  },
+  {
+    "model": "TF-IDF + Logistic Regression",
+    "accuracy": 0.8694,
+    "macro_f1": 0.8644,
+    "f1_negative": 0.891,
+    "f1_positive": 0.838,
+    "train_time_sec": 0.28
+  },
+  {
+    "model": "TF-IDF + LinearSVC",
+    "accuracy": 0.8834,
+    "macro_f1": 0.8785,
+    "f1_negative": 0.903,
+    "f1_positive": 0.854,
+    "train_time_sec": 0.04
+  }
+]

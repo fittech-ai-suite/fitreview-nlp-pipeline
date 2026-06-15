@@ -1,0 +1,213 @@
+{
+  "total_reviews": 5704,
+  "overall_accuracy_on_full_dataset": 0.9711,
+  "by_app": [
+    {
+      "app": "Fitbit",
+      "pct_positive": 0.024390243902439025,
+      "n_reviews": 287
+    },
+    {
+      "app": "MyFitnessPal",
+      "pct_positive": 0.08171206225680934,
+      "n_reviews": 257
+    },
+    {
+      "app": "Google Fit",
+      "pct_positive": 0.11693548387096774,
+      "n_reviews": 248
+    },
+    {
+      "app": "Bodybuilding.com",
+      "pct_positive": 0.1522633744855967,
+      "n_reviews": 243
+    },
+    {
+      "app": "Calm",
+      "pct_positive": 0.23904382470119523,
+      "n_reviews": 251
+    },
+    {
+      "app": "Yazio",
+      "pct_positive": 0.26778242677824265,
+      "n_reviews": 239
+    },
+    {
+      "app": "Mindbody",
+      "pct_positive": 0.2788104089219331,
+      "n_reviews": 269
+    },
+    {
+      "app": "DailyBurn",
+      "pct_positive": 0.29385964912280704,
+      "n_reviews": 228
+    },
+    {
+      "app": "Whoop",
+      "pct_positive": 0.3228346456692913,
+      "n_reviews": 254
+    },
+    {
+      "app": "Nike Training Club",
+      "pct_positive": 0.3333333333333333,
+      "n_reviews": 234
+    },
+    {
+      "app": "Endomondo",
+      "pct_positive": 0.3511450381679389,
+      "n_reviews": 262
+    },
+    {
+      "app": "Vitacost",
+      "pct_positive": 0.35447761194029853,
+      "n_reviews": 268
+    },
+    {
+      "app": "Nike Run Club",
+      "pct_positive": 0.42745098039215684,
+      "n_reviews": 255
+    },
+    {
+      "app": "StrongLifts 5x5",
+      "pct_positive": 0.4826388888888889,
+      "n_reviews": 288
+    },
+    {
+      "app": "Garmin Connect",
+      "pct_positive": 0.484251968503937,
+      "n_reviews": 254
+    },
+    {
+      "app": "MapMyFitness",
+      "pct_positive": 0.5568181818181818,
+      "n_reviews": 264
+    },
+    {
+      "app": "Prepear",
+      "pct_positive": 0.5916030534351145,
+      "n_reviews": 262
+    },
+    {
+      "app": "Zwift",
+      "pct_positive": 0.6053639846743295,
+      "n_reviews": 261
+    },
+    {
+      "app": "Sleep as Android",
+      "pct_positive": 0.6766917293233082,
+      "n_reviews": 266
+    },
+    {
+      "app": "MapMyRide",
+      "pct_positive": 0.6832740213523132,
+      "n_reviews": 281
+    },
+    {
+      "app": "Cronometer",
+      "pct_positive": 0.7471698113207547,
+      "n_reviews": 265
+    },
+    {
+      "app": "FatSecret",
+      "pct_positive": 0.8257575757575758,
+      "n_reviews": 264
+    },
+    {
+      "app": "Glo Yoga",
+      "pct_positive": 1.0,
+      "n_reviews": 4
+    }
+  ],
+  "by_category": [
+    {
+      "category": "recovery",
+      "pct_positive": 0.1645101663585952,
+      "n_reviews": 541
+    },
+    {
+      "category": "workout",
+      "pct_positive": 0.24507042253521127,
+      "n_reviews": 710
+    },
+    {
+      "category": "yoga",
+      "pct_positive": 0.25098039215686274,
+      "n_reviews": 255
+    },
+    {
+      "category": "supplements",
+      "pct_positive": 0.2583170254403131,
+      "n_reviews": 511
+    },
+    {
+      "category": "gym",
+      "pct_positive": 0.2788104089219331,
+      "n_reviews": 269
+    },
+    {
+      "category": "sports_tracking",
+      "pct_positive": 0.3511450381679389,
+      "n_reviews": 262
+    },
+    {
+      "category": "powerlifting",
+      "pct_positive": 0.4826388888888889,
+      "n_reviews": 288
+    },
+    {
+      "category": "nutrition",
+      "pct_positive": 0.48878048780487804,
+      "n_reviews": 1025
+    },
+    {
+      "category": "running",
+      "pct_positive": 0.49029754204398446,
+      "n_reviews": 773
+    },
+    {
+      "category": "meal_prep",
+      "pct_positive": 0.5916030534351145,
+      "n_reviews": 262
+    },
+    {
+      "category": "cycling",
+      "pct_positive": 0.6457564575645757,
+      "n_reviews": 542
+    },
+    {
+      "category": "sleep",
+      "pct_positive": 0.6766917293233082,
+      "n_reviews": 266
+    }
+  ],
+  "by_aspect": {
+    "Price / Value": {
+      "pct_positive": 0.394,
+      "n_reviews": 1398
+    },
+    "Bugs & Crashes": {
+      "pct_positive": 0.192,
+      "n_reviews": 707
+    },
+    "Ads": {
+      "pct_positive": 0.337,
+      "n_reviews": 282
+    },
+    "UI / UX": {
+      "pct_positive": 0.53,
+      "n_reviews": 666
+    },
+    "Features": {
+      "pct_positive": 0.362,
+      "n_reviews": 1961
+    },
+    "Accuracy": {
+      "pct_positive": 0.34,
+      "n_reviews": 782
+    },
+    "Support": {
+      "pct_positive": 0.303,
+      "n_reviews": 380
+    }
+  }
+}

@@ -10,3 +10,4 @@ mlruns/
 dist/
 build/
 .ipynb_checkpoints/
+mlflow.db

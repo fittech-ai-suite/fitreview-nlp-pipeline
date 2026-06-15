@@ -1,8 +1,4 @@
-"""
-DistilBERT fine-tuning for fitness review sentiment.
-Uses the cleaned dataset + class weights from the EDA step to deal
-with the neutral class being underrepresented.
-"""
+"""DistilBERT binary sentiment — negative vs positive, neutral reviews dropped."""
 
 import pandas as pd
 import numpy as np
@@ -17,23 +13,23 @@ from transformers import (
 from torch.optim import AdamW
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score, f1_score
+from sklearn.utils.class_weight import compute_class_weight
 import mlflow
 import os
 import json
 from tqdm import tqdm
 
-os.makedirs("models", exist_ok=True)
+os.makedirs("models/distilbert-fitness-binary", exist_ok=True)
 
-LABELS = {0: "negative", 1: "neutral", 2: "positive"}
+LABELS = {0: "negative", 1: "positive"}
 MAX_LEN = 128
 BATCH_SIZE = 16
-EPOCHS = 6
+EPOCHS = 4
 LR = 2e-5
 DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 print(f"Using device: {DEVICE}")
 
 CLEAN_CSV = "data/processed/fitness_reviews_clean.csv"
-WEIGHTS_JSON = "data/processed/class_weights.json"
 
 
 class FitnessReviewDataset(Dataset):
@@ -65,17 +61,21 @@ def load_data():
     if not os.path.exists(CLEAN_CSV):
         raise FileNotFoundError(f"{CLEAN_CSV} not found - run the EDA script first")
     df = pd.read_csv(CLEAN_CSV)
-    print(f"Loaded {len(df)} reviews")
-    print(df["sentiment"].value_counts())
+    print(f"Loaded {len(df)} reviews (3-class)")
+
+    df = df[df["label"] != 1].copy()
+    df["label"] = df["label"].map({0: 0, 2: 1})
+
+    print(f"After dropping neutral: {len(df)} reviews")
+    print(df["label"].value_counts().sort_index().rename(LABELS))
     return df
 
 
-def load_class_weights():
-    with open(WEIGHTS_JSON) as f:
-        raw = json.load(f)
-    w = [raw[str(i)] for i in range(len(LABELS))]
-    print(f"Class weights (neg, neu, pos): {w}")
-    return torch.tensor(w, dtype=torch.float).to(DEVICE)
+def compute_weights(labels_array):
+    classes = np.array([0, 1])
+    weights = compute_class_weight("balanced", classes=classes, y=labels_array)
+    print(f"Class weights (neg, pos): {weights.tolist()}")
+    return torch.tensor(weights, dtype=torch.float).to(DEVICE)
 
 
 def train_epoch(model, loader, optimizer, scheduler, loss_fn, device):
@@ -112,7 +112,7 @@ def eval_epoch(model, loader, device):
 
     acc = accuracy_score(all_labels, all_preds)
     f1_macro = f1_score(all_labels, all_preds, average="macro")
-    f1_per = f1_score(all_labels, all_preds, average=None, labels=[0, 1, 2])
+    f1_per = f1_score(all_labels, all_preds, average=None, labels=[0, 1])
     report = classification_report(
         all_labels, all_preds, target_names=list(LABELS.values()), digits=3
     )
@@ -120,11 +120,10 @@ def eval_epoch(model, loader, device):
 
 
 if __name__ == "__main__":
-    mlflow.set_experiment("fitreview-distilbert")
+    mlflow.set_experiment("fitreview-distilbert-binary")
 
     with mlflow.start_run():
         df = load_data()
-        class_weights = load_class_weights()
 
         texts = df["text"].tolist()
         labels = df["label"].tolist()
@@ -133,6 +132,8 @@ if __name__ == "__main__":
             texts, labels, test_size=0.2, random_state=42, stratify=labels
         )
         print(f"\nTrain: {len(X_train)} | Test: {len(X_test)}")
+
+        class_weights = compute_weights(np.array(y_train))
 
         print("\nLoading tokenizer...")
         tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
@@ -144,10 +145,9 @@ if __name__ == "__main__":
 
         print("Loading model...")
         model = DistilBertForSequenceClassification.from_pretrained(
-            "distilbert-base-uncased", num_labels=3
+            "distilbert-base-uncased", num_labels=2
         ).to(DEVICE)
 
-        # weighted loss so the model doesn't just ignore the neutral class
         loss_fn = nn.CrossEntropyLoss(weight=class_weights)
 
         optimizer = AdamW(model.parameters(), lr=LR, weight_decay=0.01)
@@ -166,7 +166,8 @@ if __name__ == "__main__":
             "test_size": len(X_test),
             "device": str(DEVICE),
             "weighted_loss": True,
-            "data": "cleaned",
+            "num_labels": 2,
+            "data": "binary_no_neutral",
         })
 
         print(f"\nTraining for {EPOCHS} epochs...")
@@ -178,7 +179,7 @@ if __name__ == "__main__":
 
             print(f"Train Loss: {train_loss:.4f}")
             print(f"Val Acc: {acc:.4f} | Macro-F1: {f1_macro:.4f}")
-            print(f"Per-class F1 -> neg {f1_per[0]:.3f} | neu {f1_per[1]:.3f} | pos {f1_per[2]:.3f}")
+            print(f"Per-class F1 -> neg {f1_per[0]:.3f} | pos {f1_per[1]:.3f}")
             print(f"\n{report}")
 
             mlflow.log_metrics({
@@ -186,31 +187,29 @@ if __name__ == "__main__":
                 "val_acc": acc,
                 "val_macro_f1": f1_macro,
                 "val_f1_negative": float(f1_per[0]),
-                "val_f1_neutral": float(f1_per[1]),
-                "val_f1_positive": float(f1_per[2]),
+                "val_f1_positive": float(f1_per[1]),
             }, step=epoch)
 
-            # keep the best checkpoint by macro-F1
             if f1_macro > best_f1:
                 best_f1 = f1_macro
-                model.save_pretrained("models/distilbert-fitness")
-                tokenizer.save_pretrained("models/distilbert-fitness")
+                model.save_pretrained("models/distilbert-fitness-binary")
+                tokenizer.save_pretrained("models/distilbert-fitness-binary")
                 print(f"New best model saved (macro-F1 {best_f1:.4f})")
 
         model_info = {
-            "model_name": "distilbert-base-uncased-finetuned-fitness",
+            "model_name": "distilbert-base-uncased-finetuned-fitness-binary",
             "base_model": "distilbert-base-uncased",
-            "num_labels": 3,
+            "num_labels": 2,
             "labels": LABELS,
             "best_macro_f1": round(best_f1, 4),
             "weighted_loss": True,
-            "version": "2.0.0",
+            "version": "1.0.0",
         }
-        with open("models/model_info.json", "w") as f:
+        with open("models/distilbert-fitness-binary/model_info.json", "w") as f:
             json.dump(model_info, f, indent=2)
         mlflow.log_metric("best_macro_f1", best_f1)
 
         print("\n" + "=" * 50)
         print(f"Done. Best macro-F1: {best_f1:.4f}")
-        print("Saved to models/distilbert-fitness/")
+        print("Saved to models/distilbert-fitness-binary/")
         print("=" * 50)
