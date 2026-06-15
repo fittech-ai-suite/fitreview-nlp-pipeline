@@ -2,6 +2,8 @@
 
 Sentiment analysis pipeline for fitness app reviews — from raw Google Play data through fine-tuned DistilBERT to a REST API with aspect-level insights.
 
+**Model weights**: [Anurag717/distilbert-fitness-sentiment-binary](https://huggingface.co/Anurag717/distilbert-fitness-sentiment-binary)
+
 ## Results
 
 | Model | Accuracy | Macro-F1 | neg F1 | pos F1 |
