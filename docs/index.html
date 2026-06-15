@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitReview NLP Pipeline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #07090f;
+      --surface: #0f1420;
+      --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0;
+      --muted: #8b95a8;
+      --blue: #4f9cf9;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,9,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-brand { font-weight: 600; font-size: 15px; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--blue);
+      color: #fff !important;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* HERO */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 96px 2rem 80px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(79,156,249,0.12);
+      color: var(--blue);
+      border: 1px solid rgba(79,156,249,0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--blue); }
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* STATS */
+    .stats {
+      max-width: 860px;
+      margin: 0 auto 80px;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .stat {
+      background: var(--surface);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* SECTIONS */
+    section { max-width: 860px; margin: 0 auto; padding: 0 2rem 80px; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .section-sub { color: var(--muted); margin-bottom: 36px; }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: var(--surface);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    tbody td {
+      padding: 13px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: rgba(255,255,255,0.02); }
+    tr.highlight td { background: rgba(79,156,249,0.06); font-weight: 500; }
+    tr.highlight td:first-child { color: var(--blue); }
+    .score-good { color: var(--green); font-weight: 600; }
+    .score-mid { color: var(--yellow); }
+    .score-bad { color: var(--red); }
+
+    /* STEPS */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      background: rgba(79,156,249,0.12);
+      color: var(--blue);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px;
+      margin-bottom: 14px;
+    }
+    .step h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* FINDINGS */
+    .aspect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 36px; }
+    .aspect-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .aspect-name { font-size: 14px; font-weight: 500; }
+    .aspect-n { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .aspect-score { font-size: 1.25rem; font-weight: 700; }
+    .bar-wrap { width: 100%; background: rgba(255,255,255,0.05); border-radius: 4px; height: 5px; margin-top: 10px; }
+    .bar { height: 5px; border-radius: 4px; }
+
+    /* CHARTS */
+    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .chart-card img { width: 100%; display: block; }
+    .chart-caption { padding: 12px 16px; font-size: 13px; color: var(--muted); }
+    .chart-full { grid-column: 1 / -1; }
+
+    /* CODE */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .code-header {
+      background: rgba(255,255,255,0.03);
+      padding: 10px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+    pre {
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-x: auto;
+      color: #cdd6f4;
+    }
+    .kw { color: #cba6f7; }
+    .fn { color: #89b4fa; }
+    .str { color: #a6e3a1; }
+    .cm { color: #6c7086; }
+
+    /* ERROR ANALYSIS */
+    .error-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .error-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .error-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+    .error-card h4 span {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-left: 6px;
+      font-weight: 500;
+    }
+    .tag-fp { background: rgba(239,68,68,0.12); color: var(--red); }
+    .tag-fn { background: rgba(245,158,11,0.12); color: var(--yellow); }
+    .error-quote {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      border-left: 2px solid var(--border);
+      padding-left: 12px;
+      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+    .error-note { font-size: 12px; color: var(--muted); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 8px; }
+
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: 1fr; }
+      .aspect-grid { grid-template-columns: 1fr; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .error-cards { grid-template-columns: 1fr; }
+      .nav-links .hide-sm { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">FitReview NLP</a>
+  <div class="nav-links">
+    <a class="hide-sm" href="#results">Results</a>
+    <a class="hide-sm" href="#findings">Findings</a>
+    <a class="hide-sm" href="#quickstart">Quick Start</a>
+    <a class="nav-cta" href="https://huggingface.co/spaces/Anurag717/fitreview-demo" target="_blank">Live Demo →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">NLP · PyTorch · HuggingFace · FastAPI</div>
+  <h1>Sentiment Analysis for<br /><span>Fitness App Reviews</span></h1>
+  <p>Fine-tuned DistilBERT on 6,500+ real Google Play reviews across 23 fitness apps. 91.2% accuracy with aspect-level insight into what drives user satisfaction.</p>
+  <div class="hero-btns">
+    <a class="btn btn-primary" href="https://huggingface.co/spaces/Anurag717/fitreview-demo" target="_blank">Try the demo</a>
+    <a class="btn btn-outline" href="https://github.com/fittech-ai-suite/fitreview-nlp-pipeline" target="_blank">GitHub</a>
+    <a class="btn btn-outline" href="https://huggingface.co/Anurag717/distilbert-fitness-sentiment-binary" target="_blank">Model weights</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-value">6,549</div><div class="stat-label">Reviews scraped</div></div>
+  <div class="stat"><div class="stat-value">23</div><div class="stat-label">Fitness apps</div></div>
+  <div class="stat"><div class="stat-value">91.2%</div><div class="stat-label">Accuracy</div></div>
+  <div class="stat"><div class="stat-value">0.909</div><div class="stat-label">Macro F1</div></div>
+</div>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="section-label">Evaluation</div>
+  <h2>Model Comparison</h2>
+  <p class="section-sub">All models trained and evaluated on the same 80/20 stratified split for a fair comparison.</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Accuracy</th>
+          <th>Macro F1</th>
+          <th>neg F1</th>
+          <th>pos F1</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Majority class baseline</td>
+          <td class="score-bad">57.8%</td>
+          <td class="score-bad">0.366</td>
+          <td>0.732</td>
+          <td class="score-bad">0.000</td>
+        </tr>
+        <tr>
+          <td>TF-IDF + Logistic Regression</td>
+          <td class="score-mid">86.9%</td>
+          <td class="score-mid">0.864</td>
+          <td>0.891</td>
+          <td>0.838</td>
+        </tr>
+        <tr>
+          <td>TF-IDF + LinearSVC</td>
+          <td class="score-mid">88.3%</td>
+          <td class="score-mid">0.879</td>
+          <td>0.903</td>
+          <td>0.854</td>
+        </tr>
+        <tr>
+          <td>DistilBERT 3-class (neg / neu / pos)</td>
+          <td class="score-mid">77.0%</td>
+          <td class="score-bad">~0.70</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+        <tr class="highlight">
+          <td>DistilBERT binary (neg / pos) ✦</td>
+          <td class="score-good">91.2%</td>
+          <td class="score-good">0.909</td>
+          <td class="score-good">0.927</td>
+          <td class="score-good">0.891</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:14px;font-size:13px;color:var(--muted)">The 3-class model's neutral class (3-star reviews) scored F1 = 0.37 — genuinely ambiguous text that even human raters disagree on. Dropping neutral and reframing as binary lifted accuracy by 14 points.</p>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="section-label">Methodology</div>
+  <h2>How It Works</h2>
+  <p class="section-sub">End-to-end from raw app store data to a production-ready REST API.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Data Collection</h3>
+      <p>Scraped 6,549 reviews across 23 fitness apps (nutrition, cycling, running, yoga, sleep and more) from Google Play. Each review is annotated with 7 aspect flags during EDA.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Model Training</h3>
+      <p>Fine-tuned DistilBERT on binary labels (negative / positive). Neutral 3-star reviews dropped — they're ambiguous by design and hurt both precision and recall on the classes that matter.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Aspect Analysis</h3>
+      <p>Ran the trained model over all 5,704 non-neutral reviews and aggregated predictions by app, category, and aspect (price, bugs, UI, features, accuracy, ads, support).</p>
+    </div>
+  </div>
+</section>
+
+<!-- KEY FINDINGS -->
+<section id="findings">
+  <div class="section-label">Insights</div>
+  <h2>What Drives Negative Reviews</h2>
+  <p class="section-sub">% positive among reviews that mention each aspect. Bugs are the single biggest pain point — 81% of bug-related reviews are negative.</p>
+  <div class="aspect-grid">
+    <div class="aspect-card" style="flex-direction:column;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;width:100%">
+        <div><div class="aspect-name">Bugs &amp; Crashes</div><div class="aspect-n">n = 707 reviews</div></div>
+        <div class="aspect-score score-bad">19%</div>
+      </div>
+      <div class="bar-wrap"><div class="bar" style="width:19%;background:var(--red)"></div></div>
+    </div>
+    <div class="aspect-card" style="flex-direction:column;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;width:100%">
+        <div><div class="aspect-name">Customer Support</div><div class="aspect-n">n = 380 reviews</div></div>
+        <div class="aspect-score score-bad">30%</div>
+      </div>
+      <div class="bar-wrap"><div class="bar" style="width:30%;background:var(--red)"></div></div>
+    </div>
+    <div class="aspect-card" style="flex-direction:column;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;width:100%">
+        <div><div class="aspect-name">Ads</div><div class="aspect-n">n = 282 reviews</div></div>
+        <div class="aspect-score score-bad">34%</div>
+      </div>
+      <div class="bar-wrap"><div class="bar" style="width:34%;background:var(--red)"></div></div>
+    </div>
+    <div class="aspect-card" style="flex-direction:column;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;width:100%">
+        <div><div class="aspect-name">Accuracy</div><div class="aspect-n">n = 782 reviews</div></div>
+        <div class="aspect-score score-bad">34%</div>
+      </div>
+      <div class="bar-wrap"><div class="bar" style="width:34%;background:var(--red)"></div></div>
+    </div>
+    <div class="aspect-card" style="flex-direction:column;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;width:100%">
+        <div><div class="aspect-name">Price / Value</div><div class="aspect-n">n = 1,398 reviews</div></div>
+        <div class="aspect-score score-mid">39%</div>
+      </div>
+      <div class="bar-wrap"><div class="bar" style="width:39%;background:var(--yellow)"></div></div>
+    </div>
+    <div class="aspect-card" style="flex-direction:column;align-items:flex-start;">
+      <div style="display:flex;justify-content:space-between;width:100%">
+        <div><div class="aspect-name">UI / UX</div><div class="aspect-n">n = 666 reviews</div></div>
+        <div class="aspect-score score-good">53%</div>
+      </div>
+      <div class="bar-wrap"><div class="bar" style="width:53%;background:var(--green)"></div></div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <img src="https://raw.githubusercontent.com/fittech-ai-suite/fitreview-nlp-pipeline/master/results/analysis/sentiment_by_app.png" alt="Sentiment by app" loading="lazy" />
+      <div class="chart-caption">% positive reviews per app. Fitbit (2.4%) and MyFitnessPal (8.2%) are the most negative despite market dominance.</div>
+    </div>
+    <div class="chart-card">
+      <img src="https://raw.githubusercontent.com/fittech-ai-suite/fitreview-nlp-pipeline/master/results/evaluation/confusion_matrix.png" alt="Confusion matrix" loading="lazy" />
+      <div class="chart-caption">Confusion matrix on the held-out test set (1,141 samples). 100 errors total.</div>
+    </div>
+    <div class="chart-card chart-full">
+      <img src="https://raw.githubusercontent.com/fittech-ai-suite/fitreview-nlp-pipeline/master/results/analysis/aspect_heatmap.png" alt="Aspect heatmap" loading="lazy" />
+      <div class="chart-caption">Aspect × app heatmap. Red = mostly negative reviews, green = mostly positive. Cells with fewer than 5 mentions are excluded.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ERROR ANALYSIS -->
+<section>
+  <div class="section-label">Error Analysis</div>
+  <h2>Where the Model Fails</h2>
+  <p class="section-sub">100 / 1,141 test samples misclassified (91.2% correct). The failure modes are consistent and interpretable.</p>
+  <div class="error-cards">
+    <div class="error-card">
+      <h4>False Positives <span class="tag-fp">predicted positive</span></h4>
+      <div class="error-quote">"A great app in general, but so much stuff in there that I don't need… I don't want meal tips, I don't need all these animations…" <br/>— 1-star review, conf 0.995</div>
+      <div class="error-note">Opens with "great app" — the model weights positive framing more than the closing complaint list. Confidence is high because the language is calm, not angry.</div>
+    </div>
+    <div class="error-card">
+      <h4>False Negatives <span class="tag-fn">predicted negative</span></h4>
+      <div class="error-quote">"Good product, bad customer service. I've had no connectivity issues at all. I find the data to be pretty accurate and useful…" <br/>— 4-star review, conf 0.994</div>
+      <div class="error-note">Bug reports written with calm resignation ("since the October update GPS doesn't work") — no emotional language for the model to pick up on.</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK START -->
+<section id="quickstart">
+  <div class="section-label">Usage</div>
+  <h2>Quick Start</h2>
+  <p class="section-sub">Load the model directly from HuggingFace Hub — no local weights needed.</p>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dot" style="background:#ff5f57"></div>
+      <div class="code-dot" style="background:#febc2e"></div>
+      <div class="code-dot" style="background:#28c840"></div>
+      <span style="margin-left:8px">Python</span>
+    </div>
+    <pre><span class="kw">from</span> src.inference.predictor <span class="kw">import</span> SentimentPredictor
+
+model = SentimentPredictor(<span class="str">"Anurag717/distilbert-fitness-sentiment-binary"</span>)
+
+<span class="cm"># single prediction</span>
+model.predict(<span class="str">"This app completely transformed my training routine"</span>)
+<span class="cm"># → {'label': 'positive', 'confidence': 0.981, 'scores': {'negative': 0.019, 'positive': 0.981}}</span>
+
+<span class="cm"># batch inference</span>
+model.predict_batch([
+    <span class="str">"Crashes every time I try to log a workout"</span>,
+    <span class="str">"Clean UI, accurate tracking, no complaints after 2 years"</span>,
+])
+
+<span class="cm"># REST API</span>
+<span class="cm"># uvicorn src.api.app:app --port 8000</span>
+<span class="cm"># POST /predict  {"text": "..."}</span></pre>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>Built by Anurag Rawat</div>
+  <div class="footer-links">
+    <a href="https://github.com/fittech-ai-suite/fitreview-nlp-pipeline" target="_blank">GitHub</a>
+    <a href="https://huggingface.co/Anurag717/distilbert-fitness-sentiment-binary" target="_blank">HuggingFace Model</a>
+    <a href="https://huggingface.co/spaces/Anurag717/fitreview-demo" target="_blank">Live Demo</a>
+    <a href="mailto:anuragrawat.00.28@gmail.com">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
