@@ -376,8 +376,8 @@
   </h1>
 
   <p class="hero-sub">
-    Fine-tuned DistilBERT on 6,500+ real Google Play reviews across 23 apps.
-    91.2% accuracy with aspect-level insight into what drives user satisfaction.
+    Fine-tuned RoBERTa-base on 6,500+ real Google Play reviews across 23 apps.
+    93.8% accuracy with aspect-level insight into what drives user satisfaction.
   </p>
 
   <div class="hero-btns">
@@ -406,12 +406,12 @@
     </div>
     <div class="stat-card">
       <span class="stat-icon">🎯</span>
-      <div class="stat-val" data-target="91.2" data-suffix="%" data-decimal="1">0</div>
+      <div class="stat-val" data-target="93.8" data-suffix="%" data-decimal="1">0</div>
       <div class="stat-lbl">Accuracy</div>
     </div>
     <div class="stat-card">
       <span class="stat-icon">📐</span>
-      <div class="stat-val" data-target="0.909" data-suffix="" data-decimal="3">0</div>
+      <div class="stat-val" data-target="0.935" data-suffix="" data-decimal="3">0</div>
       <div class="stat-lbl">Macro F1</div>
     </div>
   </div>
@@ -448,16 +448,22 @@
           <td>DistilBERT 3-class (neg/neu/pos)</td>
           <td class="y">77.0%</td><td class="r">~0.70</td><td>—</td><td>—</td>
         </tr>
+        <tr>
+          <td>DistilBERT binary (neg/pos)</td>
+          <td class="y">91.2%</td><td class="y">0.909</td><td>0.927</td><td>0.891</td>
+        </tr>
         <tr class="best">
-          <td>DistilBERT binary (neg/pos)<span class="tag-best">Best</span></td>
-          <td class="g">91.2%</td><td class="g">0.909</td><td class="g">0.927</td><td class="g">0.891</td>
+          <td>RoBERTa-base binary (neg/pos)<span class="tag-best">Best</span></td>
+          <td class="g">93.8%</td><td class="g">0.935</td><td class="g">0.948</td><td class="g">0.923</td>
         </tr>
       </tbody>
     </table>
   </div>
   <p class="reveal reveal-delay-2" style="margin-top:16px;font-size:13px;color:var(--muted)">
-    The 3-class model's neutral class (3-star reviews) scored F1&nbsp;=&nbsp;0.37 — genuinely ambiguous text.
-    Dropping neutral and reframing as binary lifted accuracy by <strong style="color:var(--text)">+14 points</strong>.
+    The 3-class neutral class (3-star reviews) scored F1&nbsp;=&nbsp;0.37 — inherently ambiguous text.
+    Switching to binary framing and upgrading to RoBERTa-base with negation-aware augmentation
+    lifted accuracy from 77% to <strong style="color:var(--text)">93.8% (+16.8 points)</strong> and fixed
+    the positional-bias failure mode that plagued DistilBERT.
   </p>
 </section>
 
@@ -477,7 +483,7 @@
     <div class="step-card reveal reveal-delay-2">
       <div class="step-num">2</div>
       <h3>Model Training</h3>
-      <p>Fine-tuned DistilBERT with weighted cross-entropy loss. Neutral 3-star reviews dropped — they're inherently ambiguous and the binary framing better reflects real product decisions.</p>
+      <p>Fine-tuned RoBERTa-base with label smoothing, cosine LR schedule, and 303 synthetic negation examples that directly teach contrastive sentence structure — fixing the positional-bias failure of smaller models.</p>
     </div>
     <div class="step-card reveal reveal-delay-3">
       <div class="step-num">3</div>

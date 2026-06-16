@@ -1,8 +1,8 @@
-import torch
 import numpy as np
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
+import torch
 from tqdm import tqdm
-from typing import List, Dict, Optional
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from typing import Dict, List, Optional
 
 LABELS = {0: "negative", 1: "positive"}
 
@@ -10,17 +10,21 @@ LABELS = {0: "negative", 1: "positive"}
 class SentimentPredictor:
     def __init__(
         self,
-        model_dir: str = "models/distilbert-fitness-binary",
+        model_dir: str = "models/roberta-fitness-binary",
         device: Optional[str] = None,
         max_len: int = 128,
     ) -> None:
         if device is None:
-            device = "mps" if torch.backends.mps.is_available() else "cpu"
+            if torch.cuda.is_available():
+                device = "cuda"
+            elif torch.backends.mps.is_available():
+                device = "mps"
+            else:
+                device = "cpu"
         self.device = torch.device(device)
         self.max_len = max_len
-
-        self.tokenizer = DistilBertTokenizer.from_pretrained(model_dir)
-        self.model = DistilBertForSequenceClassification.from_pretrained(model_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_dir)
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_dir)
         self.model.to(self.device)
         self.model.eval()
 
@@ -47,17 +51,15 @@ class SentimentPredictor:
         }
 
     def predict_batch(
-        self, texts: List[str], batch_size: int = 64, show_progress: bool = True
+        self, texts: List[str], batch_size: int = 32, show_progress: bool = True
     ) -> List[Dict]:
         results: List[Dict] = []
-        batches = range(0, len(texts), batch_size)
+        indices = range(0, len(texts), batch_size)
         if show_progress:
-            batches = tqdm(batches, desc="Inference", unit="batch")
-
-        for start in batches:
-            batch_texts = texts[start : start + batch_size]
+            indices = tqdm(indices, desc="Inference", unit="batch")
+        for start in indices:
             enc = self.tokenizer(
-                batch_texts,
+                texts[start : start + batch_size],
                 max_length=self.max_len,
                 padding="max_length",
                 truncation=True,
