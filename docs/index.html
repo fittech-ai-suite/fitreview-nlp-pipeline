@@ -667,16 +667,18 @@ model.predict_batch([
     }
     requestAnimationFrame(step);
   }
-  const statsObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.currentTarget.querySelectorAll('[data-target]').forEach(countUp);
-        statsObserver.unobserve(e.currentTarget);
-      }
-    });
-  }, { threshold: 0.5 });
   const statsRow = document.querySelector('.stats-row');
-  if (statsRow) statsObserver.observe(statsRow);
+  if (statsRow) {
+    const statsObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('[data-target]').forEach(countUp);
+          statsObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    statsObserver.observe(statsRow);
+  }
 
   // nav shrink on scroll
   const nav = document.querySelector('nav');
