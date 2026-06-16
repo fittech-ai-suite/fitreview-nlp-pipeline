@@ -30,7 +30,7 @@ class SentimentPredictor:
 
     def predict(self, text: str) -> Dict:
         enc = self.tokenizer(
-            text,
+            text.lower(),
             max_length=self.max_len,
             padding="max_length",
             truncation=True,
@@ -59,7 +59,7 @@ class SentimentPredictor:
             indices = tqdm(indices, desc="Inference", unit="batch")
         for start in indices:
             enc = self.tokenizer(
-                texts[start : start + batch_size],
+                [t.lower() for t in texts[start : start + batch_size]],
                 max_length=self.max_len,
                 padding="max_length",
                 truncation=True,
