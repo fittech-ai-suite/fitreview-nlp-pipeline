@@ -50,6 +50,9 @@ MAX_BATCH_SIZE = 32  # tighter than before to prevent abuse
 @app.on_event("startup")
 def load_model() -> None:
     global _predictor
+    if os.getenv("SKIP_MODEL_LOAD") == "true":
+        logger.info("SKIP_MODEL_LOAD=true — skipping model load (CI mode).")
+        return
     _predictor = SentimentPredictor()
     logger.info("Model loaded.")
 

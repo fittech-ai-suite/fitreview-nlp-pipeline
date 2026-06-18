@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fitreview-api
+  labels:
+    app: fitreview-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fitreview-api
+  template:
+    metadata:
+      labels:
+        app: fitreview-api
+    spec:
+      containers:
+        - name: fitreview-api
+          image: fitreview-api:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: ENV
+              value: "production"
+            - name: ALLOWED_ORIGINS
+              value: "*"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "3Gi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+      terminationGracePeriodSeconds: 30
